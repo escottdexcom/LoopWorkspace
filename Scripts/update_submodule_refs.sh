@@ -1,8 +1,20 @@
 #!/bin/zsh
 
-projects=(LoopKit:AmplitudeService:dev LoopKit:CGMBLEKit:dev LoopKit:G7SensorKit:main LoopKit:LogglyService:dev LoopKit:Loop:dev LoopKit:LoopKit:dev LoopKit:LoopOnboarding:dev LoopKit:LoopSupport:dev LoopKit:NightscoutAPIClient:master ps2:NightscoutService:dev LoopKit:OmniBLE:dev LoopKit:TidepoolKit:dev LoopKit:TidepoolService:dev LoopKit:dexcom-share-client-swift:dev ps2:rileylink_ios:dev LoopKit:OmniKit:main LoopKit:MinimedKit:main)
+source Scripts/define_common.sh
 
-for project in ${projects}; do
+section_divider
+echo "You are running ${0}"
+echo
+echo "  This modifies your local clone, in whatever branch is currently selected,"
+echo "  so that every submodule is at the tip of the appropriate branch."
+echo
+current_branch=$(git branch --show-current 2>/dev/null)
+echo "  The current LoopWorkspace branch is $current_branch"
+
+continue_or_quit ${0}
+
+for project in ${PROJECTS}; do
+  echo
   echo "Updating to $project"
   IFS=":" read user dir branch <<< "$project"
   echo "Updating to $branch on $user/$project"
@@ -11,4 +23,3 @@ for project in ${projects}; do
   git pull
   cd -
 done
-
